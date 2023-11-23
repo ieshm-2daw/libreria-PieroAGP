@@ -1,0 +1,18 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Lista libros</title> {% endblock %}
+
+{% block content %}
+    <article>
+        <h1>Libros</h1>
+        {% for libro in book_list %}
+    
+            <p>libro: {{libro.titulo}}</p>
+    
+            {% empty %}
+            <p>No hay libros</p>
+        {%endfor%}
+    
+        
+    </article>
+{% endblock %}
