@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from .models import Libro,Autor
 
 
-from django.views.generic import ListView, CreateView ,DetailView
+from django.views.generic import ListView, CreateView ,DetailView, UpdateView, DeleteView
 # Create your views here.
 
 class BookListView(ListView):
@@ -27,3 +27,14 @@ class NuevoLibro(CreateView):
 class DetalleLibro(DetailView):
     model = Libro
     template_name = 'book/detalle_libro.html'
+
+class EditarLibro(UpdateView):
+    model = Libro
+    fields = ["titulo","autores","editorial","fecha_publicacion","genero","isbn","resumen","portada"]
+    template_name = "book/editar_libro.html" 
+    success_url= reverse_lazy('lista_libros')
+
+class EliminarLibro(DeleteView):
+    model = Libro
+    success_url = reverse_lazy('lista_libros')
+    template_name="book/eliminar_libro.html"

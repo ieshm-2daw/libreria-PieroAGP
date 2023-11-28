@@ -1,0 +1,17 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Eliminar libro</title> {% endblock %}
+
+{% block content %}
+    <article>
+        <h1>Eliminar</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+            {{ form }}
+            <input type="submit" value="Confirm">
+        </form>
+
+    </article>
+{% endblock %}

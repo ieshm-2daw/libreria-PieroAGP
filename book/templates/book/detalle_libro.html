@@ -15,4 +15,8 @@
 <p><b>Portada:</b></p>
 {{libro.portada}}
 
+
+<a href="{% url 'editar_libro' pk=object.pk %}" role="button">Editar</a>
+<br>
+<a href="{% url 'elimninar_libro' pk=object.pk %}" role="button">Borrar</a>
 {% endblock %}
