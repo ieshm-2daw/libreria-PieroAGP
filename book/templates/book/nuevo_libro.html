@@ -1,0 +1,12 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Nuevo Libro</title> {% endblock %}
+
+{% block content %}
+<form action="{% url 'nuevo_libro' %}" method="post" >
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit"> Nuevo Libro </button>
+</form>
+
+{% endblock %}

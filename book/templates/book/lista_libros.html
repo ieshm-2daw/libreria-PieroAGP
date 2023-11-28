@@ -5,14 +5,12 @@
 {% block content %}
     <article>
         <h1>Libros</h1>
-        {% for libro in book_list %}
-    
-            <p>libro: {{libro.titulo}}</p>
-    
+        {% for libro in object_list %}
+            <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
+            
             {% empty %}
             <p>No hay libros</p>
         {%endfor%}
-    
-        
     </article>
+    <a href="{% url 'nuevo_libro' %}" role="button">Nuevo Libro</a>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Detalles del Libro</title> {% endblock %}
+
+{% block content %}
+
+<h1>Detalles</h1>
+<p><b>Titulo:</b> {{libro.titulo}}</p>
+<p><b>Autor:</b> {{libro.autores}}</p>
+<p><b>Editorial:</b> {{libro.editorial}}</p>
+<p><b>Fecha Publicacion:</b> {{libro.fecha_publicacion}}</p>
+<p><b>Genero:</b> {{libro.genero}}</p>
+<p><b>ISBN:</b> {{libro.isbn}}</p>
+<p><b>Resumen:</b> {{libro.resumen}}</p>
+<p><b>Portada:</b></p>
+{{libro.portada}}
+
+{% endblock %}

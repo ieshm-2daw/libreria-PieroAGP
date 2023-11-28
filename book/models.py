@@ -1,32 +1,68 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
-class Usuario(models.Model):
-    dni = models.CharField(max_length=200)
+class Autor(models.Model):
+    nombre_autor= models.CharField(max_length=100)
+    biografia = models.TextField()
+    foto = models.ImageField(upload_to='autores/',null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre_autor
+
+class Editorial(models.Model):
+    nombre=models.CharField(max_length=100)
     direccion = models.CharField(max_length=200)
-    telefono = models.CharField(max_length=200)
+    sitio_web = models.URLField()
+
+    def __str__(self):
+        return self.nombre
 
 class Libro(models.Model):
     titulo = models.CharField(max_length=200)
-    nombre_autor = models.CharField(max_length=200)
-    editorial = models.CharField(max_length=200)
+    autores = models.ManyToManyField(Autor)
+    editorial = models.ForeignKey("Editorial", on_delete=models.CASCADE)
     fecha_publicacion = models.DateField()
-    genero = models.CharField(max_length=200)
-    isbn = models.CharField(max_length=200)
+    genero = models.CharField(max_length=100)
+    isbn = models.CharField(max_length=13)
     resumen = models.TextField()
-    disponible = models.CharField(max_length=200)
-    portada = models.CharField(max_length=200)
+    portada = models.ImageField(upload_to='portada/', null=True, blank=True)
 
-class Author(models.Model):
-    nombre_autor= models.CharField(max_length=200)
-    biografia = models.TextField()
-    foto = models.CharField(max_length=200)
+    DISPONIBILIDAD_CHOICES = (
+        ('disponible', 'Disponible'),
+        ('prestado','Prestado'),
+        ('en_proceso', 'En proceso de préstamo'),
+    )
 
-class Prestamo():
-    libro_prestado = models.CharField(max_length=200)
+    disponibilidad = models.CharField(max_length=20, choices=DISPONIBILIDAD_CHOICES, default='disponible')
+    created_at= models.DateTimeField(auto_now_add=True)
+    update_at=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.titulo
+
+class Usuario(AbstractUser):
+    dni = models.CharField(max_length=10, unique=True)
+    direccion = models.CharField(max_length=200)
+    telefono = models.CharField(max_length=15)
+    
+    def __str__(self):
+        return self.username
+
+class Prestamo(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     fecha_prestamo = models.DateField()
-    fecha_devolucion = models.DateField()
-    usuario = models.CharField(max_length=200)
-    estado = models.CharField(max_length=200)
+    fecha_devolucion = models.DateField(null=True, blank=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    ESTADO_CHOICES = (
+        ('prestado','Prestado'),
+        ('devuelto', 'Devuelto'),
+    )
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='prestado')
+
+    def __str__(self):
+        return f"Prestado de {self.libro.titulo} a {self.usuario}"
+
+
+
     
