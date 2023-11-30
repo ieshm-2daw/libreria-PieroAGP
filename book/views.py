@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -10,6 +11,18 @@ from django.views.generic import ListView, CreateView ,DetailView, UpdateView, D
 class BookListView(ListView):
     model = Libro
     template_name='book/lista_libros.html'
+    #pintar por un lado libro disponibles y no disponibles
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        #sacar dos datos del contexto
+        context= super().get_context_data(**kwargs)
+        context['libros_disponibles'] = Libro.objects.filter(disponibilidad="disponible")
+        context["libros_prestados"] = Libro.objects.filter(disponibilidad="prestado")
+
+        return context
+
+    #queryset=Libro.objects.filter(disponibilidad="disponible")
+    
+
 """
 class NuevoAutor(CreateView):
     model = Autor
@@ -20,7 +33,7 @@ class NuevoAutor(CreateView):
 
 class NuevoLibro(CreateView):
     model = Libro
-    fields = ["titulo","autores","editorial","fecha_publicacion","genero","isbn","resumen","portada"]
+    fields = ["titulo","autores","editorial","fecha_publicacion","genero","isbn","resumen","portada","disponibilidad"]
     template_name = 'book/nuevo_libro.html'
     success_url = reverse_lazy('lista_libros')
 
@@ -30,7 +43,7 @@ class DetalleLibro(DetailView):
 
 class EditarLibro(UpdateView):
     model = Libro
-    fields = ["titulo","autores","editorial","fecha_publicacion","genero","isbn","resumen","portada"]
+    fields = ["titulo","autores","editorial","fecha_publicacion","genero","isbn","resumen","portada","disponibilidad"]
     template_name = "book/editar_libro.html" 
     success_url= reverse_lazy('lista_libros')
 

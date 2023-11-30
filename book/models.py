@@ -26,7 +26,7 @@ class Libro(models.Model):
     genero = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13)
     resumen = models.TextField()
-    portada = models.ImageField(upload_to='portada/', null=True, blank=True)
+    portada = models.ImageField(upload_to='portadas/', null=True, blank=True)
 
     DISPONIBILIDAD_CHOICES = (
         ('disponible', 'Disponible'),

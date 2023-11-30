@@ -3,7 +3,7 @@
 {% block title%} <title>Nuevo Libro</title> {% endblock %}
 
 {% block content %}
-<form action="{% url 'nuevo_libro' %}" method="post" >
+<form action="{% url 'nuevo_libro' %}" enctype="multipart/form-data" method="post" >
     {% csrf_token %}
     {{ form.as_p}}
     <button type="submit"> Nuevo Libro </button>
