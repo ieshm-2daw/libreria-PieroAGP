@@ -23,7 +23,15 @@ class BookListView(ListView):
         return context
 
     #queryset=Libro.objects.filter(disponibilidad="disponible")
-    
+
+class LitaMisLibros(ListView):
+    model=Libro
+    template_name = 'book/mis_libros.html'
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context= super().get_context_data(**kwargs)
+        context["libros_prestados"] = Libro.objects.filter(disponibilidad="prestado")
+
+        return context
 
 """
 class NuevoAutor(CreateView):
@@ -63,7 +71,7 @@ class PrestamoLibro(View):
 """   
 
 def prestamo_libro(request, pk):
-    libro = get_object_or_404(Libro,pk=pk)
+    v_libro = get_object_or_404(Libro,pk=pk)
 
     if request.method == 'POST':
         
@@ -71,15 +79,33 @@ def prestamo_libro(request, pk):
         fecha_devolucion = date.today()
         #
         Prestamo.objects.create(
-            libro = libro,
+            libro = v_libro,
             fecha_prestamo = fecha_prestamo,
-            fecha_devolucion = fecha_devolucion,
+            
             usuario = request.user,
             estado = 'prestado' 
         )
-        libro.disponibilidad='prestado'
-        libro.save()
+        v_libro.disponibilidad='prestado'
+        v_libro.save()
 
         return redirect('detalle_libro',pk=pk)
 #get
-    return render(request,'book/prestamo_libro.html',{'libro':libro})
+    return render(request,'book/prestamo_libro.html',{'libro':v_libro})
+
+def devolver_libro(request, pk):
+    v_libro = get_object_or_404(Libro, pk=pk)
+    prestamo = get_object_or_404(Prestamo,libro = v_libro,usuario = request.user, estado= 'prestado')
+
+    if request.method == 'POST':
+        #para el prestamo
+        prestamo.estado = 'devuelto'
+        prestamo.fecha_devolucion = date.today()
+        prestamo.save()
+
+        #para el libro
+        v_libro.disponibilidad = 'disponible'
+        v_libro.save()
+
+        return redirect('detalle_libro', pk=pk)
+    
+    return render(request,'book/devolver_libro.html',{'libro':v_libro})

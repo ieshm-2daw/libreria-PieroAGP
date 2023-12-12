@@ -9,4 +9,6 @@ urlpatterns = [
     path('book/<int:pk>/edit', EditarLibro.as_view(),name='editar_libro'),
     path('book/<int:pk>/delete',EliminarLibro.as_view(),name='elimninar_libro'),
     path('book/<int:pk>/prestamo',views.prestamo_libro,name='prestamo_libro'),
+    path('book/<int:pk>/devolver',views.devolver_libro,name='devolver_libro'),
+    path('book/mis_libros', LitaMisLibros.as_view(), name='mis_libros'),
 ]

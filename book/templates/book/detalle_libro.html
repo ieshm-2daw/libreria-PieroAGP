@@ -24,8 +24,9 @@
 
 <br>
 {% if libro.disponibilidad == 'disponible' %}
-    <a href="{% url 'prestamo_libro' pk=object.pk %}" role="button">Prestamo</a>
-    
+    <a href="{% url 'prestamo_libro' pk=object.pk %}" role="button">Reservar libro</a>
+    {% else %}
+    <a href="{% url 'devolver_libro' pk=object.pk %}" role="button">Devolver libro</a>
 {% endif %}
 
 <br>

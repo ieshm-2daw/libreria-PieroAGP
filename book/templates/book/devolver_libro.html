@@ -1,6 +1,6 @@
 {% extends 'book/base.html' %}
 
-{% block title%} <title>Prestamo libro</title> {% endblock %}
+{% block title%} <title>Devolver libro</title> {% endblock %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit"> Reservar libro </button>
+    <button type="submit"> Devolver libro </button>
 </form>
 
 {% endblock %}
