@@ -1,8 +1,10 @@
+from datetime import date
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.views import View
 
-from .models import Libro,Autor
+from .models import Libro,Autor,Prestamo
 
 
 from django.views.generic import ListView, CreateView ,DetailView, UpdateView, DeleteView
@@ -51,3 +53,33 @@ class EliminarLibro(DeleteView):
     model = Libro
     success_url = reverse_lazy('lista_libros')
     template_name="book/eliminar_libro.html"
+
+#INtentar prestamo con clase
+"""
+class PrestamoLibro(View):
+    libro = get_object_or_404(Libro,pk=pk)
+    def get(self,request):
+        return render(request,'book/prestamo_libro.html',{'libro':libro})
+"""   
+
+def prestamo_libro(request, pk):
+    libro = get_object_or_404(Libro,pk=pk)
+
+    if request.method == 'POST':
+        
+        fecha_prestamo = date.today()
+        fecha_devolucion = date.today()
+        #
+        Prestamo.objects.create(
+            libro = libro,
+            fecha_prestamo = fecha_prestamo,
+            fecha_devolucion = fecha_devolucion,
+            usuario = request.user,
+            estado = 'prestado' 
+        )
+        libro.disponibilidad='prestado'
+        libro.save()
+
+        return redirect('detalle_libro',pk=pk)
+#get
+    return render(request,'book/prestamo_libro.html',{'libro':libro})

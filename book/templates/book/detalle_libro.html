@@ -16,12 +16,20 @@
 <p><b>Genero:</b> {{libro.genero}}</p>
 <p><b>ISBN:</b> {{libro.isbn}}</p>
 <p><b>Resumen:</b> {{libro.resumen}}</p>
+<p><b>Disponibilidad: </b>{{libro.disponibilidad}}</p>
 <p><b>Portada:</b></p>
     {% if libro.portada %}
                 <img src="{{ libro.portada.url }}" alt="">
     {% endif %}
 
 <br>
+{% if libro.disponibilidad == 'disponible' %}
+    <a href="{% url 'prestamo_libro' pk=object.pk %}" role="button">Prestamo</a>
+    
+{% endif %}
+
+<br>
+
 <a href="{% url 'editar_libro' pk=object.pk %}" role="button">Editar</a>
 <br>
 <br>
