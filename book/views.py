@@ -24,12 +24,14 @@ class BookListView(ListView):
 
     #queryset=Libro.objects.filter(disponibilidad="disponible")
 
-class LitaMisLibros(ListView):
-    model=Libro
+
+class ListadoUsuarioLibros(ListView):
+    model = Prestamo
     template_name = 'book/mis_libros.html'
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context= super().get_context_data(**kwargs)
-        context["libros_prestados"] = Libro.objects.filter(disponibilidad="prestado")
+        context["prestamos_prestados"] = Prestamo.objects.filter(estado="prestado",usuario=self.request.user)
+        context["prestamos_devueltos"] = Prestamo.objects.filter(estado="devuelto",usuario=self.request.user)
 
         return context
 

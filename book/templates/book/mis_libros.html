@@ -1,16 +1,24 @@
 {% extends 'book/base.html' %}
 
-{% block title%} <title>Lista libros</title> {% endblock %}
+{% block title%} <title>Lista mis libros</title> {% endblock %}
 
 {% block content %}
     <article>
-        <h1>Mis Libros</h1>
+        <h1>Libros prestados</h1>
 
-        {% for libro in libros_prestados %}
-            <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
-            {% if libro.portada %}
-                <img src="{{ libro.portada.url }}" alt="">
-            {% endif %}
+        {% for prestamo in prestamos_prestados %}
+            <h3><a href="{% url 'detalle_libro' pk=prestamo.libro.pk %}"><p>{{prestamo.libro}}</p></a></h3>
+            <p>{{prestamo.fecha_prestamo}}</p>
+            <p>{{prestamo.fecha_devolucion}}</p>
+            {% empty %}
+            <p>No hay libros</p>
+        {%endfor%}
+
+        <h1>Libro devueltos</h1>
+        {% for prestamo in prestamos_devueltos %}
+            <h3><p>{{prestamo.libro}}</p></h3>
+            <p>{{prestamo.fecha_prestamo}}</p>
+            <p>{{prestamo.fecha_devolucion}}</p>
             {% empty %}
             <p>No hay libros</p>
         {%endfor%}
