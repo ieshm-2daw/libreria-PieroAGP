@@ -22,6 +22,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autores = models.ManyToManyField(Autor)
     editorial = models.ForeignKey("Editorial", on_delete=models.CASCADE)
+    valoracion = models.FloatField(default=0)
     fecha_publicacion = models.DateField()
     genero = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13)

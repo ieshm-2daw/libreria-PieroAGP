@@ -35,13 +35,13 @@ class ListadoUsuarioLibros(ListView):
 
         return context
 
-"""
+
 class NuevoAutor(CreateView):
     model = Autor
     fields = ["nombre_autor","biografia","foto"]
     template_name = 'book/nuevo_autor.html'
-    success_url = 'lista_libros'
-"""
+    success_url = reverse_lazy('lista_libros')
+
 
 class NuevoLibro(CreateView):
     model = Libro
@@ -90,7 +90,7 @@ def prestamo_libro(request, pk):
         v_libro.disponibilidad='prestado'
         v_libro.save()
 
-        return redirect('detalle_libro',pk=pk)
+        return redirect('lista_libros')
 #get
     return render(request,'book/prestamo_libro.html',{'libro':v_libro})
 
@@ -108,6 +108,23 @@ def devolver_libro(request, pk):
         v_libro.disponibilidad = 'disponible'
         v_libro.save()
 
-        return redirect('detalle_libro', pk=pk)
+        return redirect('valoracion_libro', pk=pk)
     
     return render(request,'book/devolver_libro.html',{'libro':v_libro})
+
+def valoracion_libro(request, pk):
+    v_libro = get_object_or_404(Libro, pk=pk)
+
+    if request.method == 'POST':
+        #para quedamre con la valoracion del usuario
+        nueva_valoracion = float(request.POST['valoracion'])
+        #actualizo valoracion
+        if v_libro.valoracion == 0:
+            v_libro.valoracion = nueva_valoracion
+        else:
+            v_libro.valoracion = (v_libro.valoracion + nueva_valoracion)/2
+        v_libro.save()
+
+        return redirect('lista_libros')
+    
+    return render(request, 'book/valoracion_libro.html',{'libro':v_libro})

@@ -7,18 +7,23 @@
         <h1>Libros prestados</h1>
 
         {% for prestamo in prestamos_prestados %}
-            <h3><a href="{% url 'detalle_libro' pk=prestamo.libro.pk %}"><p>{{prestamo.libro}}</p></a></h3>
-            <p>{{prestamo.fecha_prestamo}}</p>
-            <p>{{prestamo.fecha_devolucion}}</p>
+            <div class="div_devuelto">
+                <h3><a href="{% url 'detalle_libro' pk=prestamo.libro.pk %}"><p>{{prestamo.libro}}</p></a></h3>
+                <p><b>Fecha de prestamo: </b>{{prestamo.fecha_prestamo}}</p>
+            </div>
+            
             {% empty %}
             <p>No hay libros</p>
         {%endfor%}
 
-        <h1>Libro devueltos</h1>
+        <h1>Libros devueltos</h1>
         {% for prestamo in prestamos_devueltos %}
-            <h3><p>{{prestamo.libro}}</p></h3>
-            <p>{{prestamo.fecha_prestamo}}</p>
-            <p>{{prestamo.fecha_devolucion}}</p>
+            <div class="div_devuelto">
+                <h3><p>{{prestamo.libro}}</p></h3>
+                <p><b>Fecha de prestamo: </b>{{prestamo.fecha_prestamo}}</p>
+                <p><b>Fecha de devolución: </b>{{prestamo.fecha_devolucion}}</p>
+            </div>
+            
             {% empty %}
             <p>No hay libros</p>
         {%endfor%}

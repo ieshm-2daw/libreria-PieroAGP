@@ -5,25 +5,37 @@
 {% block content %}
     <article>
         <h1>Libros</h1>
-        <h2>Libros disponible</h2>
-        {% for libro in libros_disponibles %}
-            <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
-            {% if libro.portada %}
-                <img src="{{ libro.portada.url }}" alt="">
-            {% endif %}
-            {% empty %}
-            <p>No hay libros</p>
-        {%endfor%}
+        <h2>Libros disponibles</h2>
+        <div class="fila">
+            {% for libro in libros_disponibles %}
+                <div class="columna">
+                    <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
+                    {% if libro.portada %}
+                        <img src="{{ libro.portada.url }}" alt="">
+                    {% endif %}
+                </div>
+                
+                {% empty %}
+                <p>No hay libros</p>
+            {%endfor%}
+        </div>
+        
 
-        <h2>Libros prestado</h2>
-        {% for libro in libros_prestados %}
-            <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
-            {% if libro.portada %}
-                <img src="{{ libro.portada.url }}" alt="">
-            {% endif %}
-            {% empty %}
-            <p>No hay libros</p>
+        <h2>Libros prestados</h2>
+        <div class="fila">
+            {% for libro in libros_prestados %}
+                <div class="columna">
+                    <h3><a href="{% url 'detalle_libro' pk=libro.pk %}"><p>{{libro.titulo}}</p></a></h3>
+                    {% if libro.portada %}
+                        <img src="{{ libro.portada.url }}" alt="">
+                    {% endif %}
+                </div>
+    
+                {% empty %}
+                <p>No hay libros</p>
         {%endfor%}
+        </div>
+        
 
     </article>
     

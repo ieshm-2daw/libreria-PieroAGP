@@ -1,0 +1,12 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Nuevo Autor</title> {% endblock %}
+
+{% block content %}
+<form action="{% url 'nuevo_autor' %}" enctype="multipart/form-data" method="post" >
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit"> Nuevo Autor </button>
+</form>
+
+{% endblock %}

@@ -3,36 +3,42 @@
 {% block title%} <title>Detalles del Libro</title> {% endblock %}
 
 {% block content %}
+<article>
 
-<h1>Detalles</h1>
-<p><b>Titulo:</b> {{libro.titulo}}</p>
-<p><b>Autor:</b> 
-    {% for autor in libro.autores.all %}
-        {{ autor.nombre_autor }} {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-</p>
-<p><b>Editorial:</b> {{libro.editorial}}</p>
-<p><b>Fecha Publicacion:</b> {{libro.fecha_publicacion}}</p>
-<p><b>Genero:</b> {{libro.genero}}</p>
-<p><b>ISBN:</b> {{libro.isbn}}</p>
-<p><b>Resumen:</b> {{libro.resumen}}</p>
-<p><b>Disponibilidad: </b>{{libro.disponibilidad}}</p>
-<p><b>Portada:</b></p>
-    {% if libro.portada %}
-                <img src="{{ libro.portada.url }}" alt="">
-    {% endif %}
+    <h1>Detalles</h1>
+    <p><b>Titulo:</b> {{libro.titulo}}</p>
+    <p><b>Autor:</b> 
+        {% for autor in libro.autores.all %}
+            {{ autor.nombre_autor }} {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p><b>Editorial:</b> {{libro.editorial}}</p>
+    <p><b>Fecha Publicacion:</b> {{libro.fecha_publicacion}}</p>
+    <p><b>Genero:</b> {{libro.genero}}</p>
+    <p><b>ISBN:</b> {{libro.isbn}}</p>
+    <p><b>Resumen:</b> {{libro.resumen}}</p>
+    <p><b>Disponibilidad: </b>{{libro.disponibilidad}}</p>
+    <p><b>Valoracion:</b> {{libro.valoracion}} </p>
+    <p><b>Portada:</b></p>
+        {% if libro.portada %}
+                    <img src="{{ libro.portada.url }}" alt="">
+        {% endif %}
 
-<br>
-{% if libro.disponibilidad == 'disponible' %}
-    <a href="{% url 'prestamo_libro' pk=object.pk %}" role="button">Reservar libro</a>
-    {% else %}
-    <a href="{% url 'devolver_libro' pk=object.pk %}" role="button">Devolver libro</a>
-{% endif %}
+        <br>
+        {% if libro.disponibilidad == 'disponible' %}
+            <a href="{% url 'prestamo_libro' pk=object.pk %}" role="button">Reservar libro</a>
+            {% else %}
+            <a href="{% url 'devolver_libro' pk=object.pk %}" role="button">Devolver libro</a>
+            
+        {% endif %}
+        
+        
+        <a href="{% url 'editar_libro' pk=object.pk %}" role="button">Editar</a>
+        
+        <a href="{% url 'elimninar_libro' pk=object.pk %}" role="button">Borrar</a>
 
-<br>
+</article>
 
-<a href="{% url 'editar_libro' pk=object.pk %}" role="button">Editar</a>
-<br>
-<br>
-<a href="{% url 'elimninar_libro' pk=object.pk %}" role="button">Borrar</a>
+
+
 {% endblock %}

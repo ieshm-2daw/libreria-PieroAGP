@@ -1,0 +1,16 @@
+{% extends 'book/base.html' %}
+
+{% block title%} <title>Valoracion libro</title> {% endblock %}
+
+{% block content %}
+<h1>Valoración</h1>
+<h3>{{libro.titulo}}</h3>
+
+<form name="formulario" method="post" action="{% url 'valoracion_libro' libro.pk %}">
+    {% csrf_token %}
+    <label for="valoracion">Valoración (1-5):</label>
+    <input type="number" name="valoracion">
+    <button type="submit"> Enviar Valoracion</button>
+</form>
+
+{% endblock %}
