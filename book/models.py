@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class Autor(models.Model):
@@ -22,7 +23,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autores = models.ManyToManyField(Autor)
     editorial = models.ForeignKey("Editorial", on_delete=models.CASCADE)
-    valoracion = models.FloatField(default=0)
+    valoracion_libro = models.DecimalField(max_digits=2, decimal_places=1, default=0)
     fecha_publicacion = models.DateField()
     genero = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13)
@@ -65,5 +66,12 @@ class Prestamo(models.Model):
         return f"Prestado de {self.libro.titulo} a {self.usuario}"
 
 
+class Valoracion(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    #campo de valoracion
+    valoracion_por_usuario = models.DecimalField(max_digits=2, decimal_places=1,validators=[MinValueValidator(0),MaxValueValidator(5)])
 
+    def __str__(self):
+        return f"Valoracion de {self.libro.titulo} a {self.usuario}"
     

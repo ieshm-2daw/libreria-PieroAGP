@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 
-from .models import Libro,Autor,Prestamo
+from .models import Libro,Autor,Prestamo,Valoracion
 
 
 from django.views.generic import ListView, CreateView ,DetailView, UpdateView, DeleteView
@@ -112,17 +112,43 @@ def devolver_libro(request, pk):
     
     return render(request,'book/devolver_libro.html',{'libro':v_libro})
 
-def valoracion_libro(request, pk):
+def valoracion_usuario_libro(request, pk):
     v_libro = get_object_or_404(Libro, pk=pk)
+    #con get_object_or_404 no funciona el firts
+    #v_prestamo = get_object_or_404(Prestamo,libro = v_libro,usuario = request.user).first()
 
+    #usando filter me da muchos prestamos de ese libro por ese usuario, con firts solo me quedo con el primero
+    v_prestamo = Prestamo.objects.filter(libro=v_libro, usuario = request.user).first() 
+    
     if request.method == 'POST':
         #para quedamre con la valoracion del usuario
         nueva_valoracion = float(request.POST['valoracion'])
-        #actualizo valoracion
-        if v_libro.valoracion == 0:
-            v_libro.valoracion = nueva_valoracion
+        try:
+            v_valoracion=Valoracion.objects.get(libro=v_libro,usuario=v_prestamo.usuario)
+        except Valoracion.DoesNotExist:
+            v_valoracion= None
+        
+        if v_valoracion is None:
+            Valoracion.objects.create(
+                libro=v_libro,
+                usuario = v_prestamo.usuario,
+                valoracion_por_usuario=nueva_valoracion,
+            )
         else:
-            v_libro.valoracion = (v_libro.valoracion + nueva_valoracion)/2
+            v_valoracion.valoracion_por_usuario=nueva_valoracion
+            v_valoracion.save()
+
+        #recorremos la tabla de valoracion por el libro devuelto y calculamos su media
+        t_valoracion = Valoracion.objects.all()
+        num_valoraciones = len(Valoracion.objects.filter(libro=v_libro))
+        acumulador_valoracion = 0
+        for valoracion in t_valoracion:
+            if valoracion.libro.titulo == v_libro.titulo:
+                acumulador_valoracion += valoracion.valoracion_por_usuario
+        media_valoracion=(acumulador_valoracion/num_valoraciones)
+
+        #actualizamos la valoracion del Libro
+        v_libro.valoracion_libro = media_valoracion
         v_libro.save()
 
         return redirect('lista_libros')

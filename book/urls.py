@@ -12,5 +12,5 @@ urlpatterns = [
     path('book/<int:pk>/prestamo',views.prestamo_libro,name='prestamo_libro'),
     path('book/<int:pk>/devolver',views.devolver_libro,name='devolver_libro'),
     path('book/mis_libros', ListadoUsuarioLibros.as_view(), name='mis_libros'),
-    path('book/<int:pk>/valoracion',views.valoracion_libro,name='valoracion_libro'),
+    path('book/<int:pk>/valoracion',views.valoracion_usuario_libro,name='valoracion_libro'),
 ]
