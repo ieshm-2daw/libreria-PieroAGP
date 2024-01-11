@@ -41,6 +41,12 @@
                 <li><a href="{% url 'nuevo_libro' %}" role="button">Nuevo Libro</a></li>
                 <li><a href="{% url 'nuevo_autor' %}" role="button">Nuevo Autor</a></li>
                 <li><a href="{% url 'mis_libros' %}" role="button">Mis libros</a></li>
+                
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" role="button">Cerrar Sesión</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" role="button">Iniciar Sesión</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

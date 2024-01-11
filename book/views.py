@@ -6,6 +6,7 @@ from django.views import View
 
 from .models import Libro,Autor,Prestamo,Valoracion
 
+from django.contrib.auth.decorators import login_required
 
 from django.views.generic import ListView, CreateView ,DetailView, UpdateView, DeleteView
 # Create your views here.
@@ -72,6 +73,7 @@ class PrestamoLibro(View):
         return render(request,'book/prestamo_libro.html',{'libro':libro})
 """   
 
+@login_required
 def prestamo_libro(request, pk):
     v_libro = get_object_or_404(Libro,pk=pk)
 
